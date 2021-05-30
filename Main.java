@@ -203,6 +203,26 @@ class Main {
 		}
 		return currentBalance;
 	}
+	public static double netIncome(double[] expenseBalances, double[] incomeBalances){
+        
+	//sets the sum of the expenses and the sum of the revenue to 0
+        double sumExpense = 0;
+        double sumRevenue = 0;
+        double netIncome = 0;
+		//adds up all of the expense arrays in a for loop
+        for (int i = 0; i < 7; i++) {
+            sumExpense = sumExpense + expenseBalances[i];
+        }
+		//adds up all the revenue arrays in a for loop
+        for (int i = 0; i < 7; i++) {
+            sumRevenue = sumRevenue + incomeBalances[i];
+        }
+		//subtracts the two sums to create the net income
+        netIncome = sumRevenue - sumExpense;
+		//returns the net income to the main
+        return netIncome;
+    	}
+
 
 	public static boolean empty(String line) {
 		return trim(line).equals("");
