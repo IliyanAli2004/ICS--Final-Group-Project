@@ -51,6 +51,7 @@ class Main {
 		fixTotalCounts();
 		initializeArrays();
 		readAccountBalances();
+		double netIncome = netIncome(expenseBalances, incomeBalances);
 	}
   public static void readAccountBalances() {
 		try {
