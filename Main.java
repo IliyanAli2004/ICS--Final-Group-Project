@@ -172,14 +172,6 @@ class Main {
 		}
 	}
 
-	public static void readCompanyNameAndDate(int lineNumber, String line) {
-		if(lineNumber == 1) {
-			companyName = line;
-		} else if(lineNumber == 3) {
-			date = line;
-		}
-	}
-
 	public static String checkCurrentBalance(String currentBalance, String line) {
 		
 		if(trim(line).equals(assetStart)) {
