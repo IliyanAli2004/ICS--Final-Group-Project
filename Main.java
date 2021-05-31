@@ -51,7 +51,24 @@ class Main {
 		fixTotalCounts();
 		initializeArrays();
 		readAccountBalances();
-		double netIncome = netIncome(expenseBalances, incomeBalances);
+    double netIncome = netIncome(expenseBalances, incomeBalances);
+
+    //Calling method to get total assets
+    double totalAssets = calculateTotalAsset(assetBalances);
+    //Calling method to get total liability
+    double totalLiability = calculateTotalLiability(liabilityBalances);
+    
+    //Calling method to get company name info
+    String[] statementInfo = getStatementInfo();
+    //Getting information from the array returned above. This infor mation is regarding the company name and date which is important to add on the balance sheet and income statements.
+    String companyName = statementInfo[0];
+    String date = statementInfo[2];
+
+    double finalBalance= getOwnersEquity(drawingBalances, capitalBalances, netIncome);
+    double ownerEquityandLiability= finalBalance+ totalLiability;
+
+    System.out.println("The totalAssets is: "+ totalAssets+". The total Liabliity is: "+ totalLiability+ " The final Balance is: "+ finalBalance+ " The total liability and owners equity is " +  ownerEquityandLiability);
+
 	}
   public static void readAccountBalances() {
 		try {
@@ -124,6 +141,7 @@ class Main {
 	}
 
 	public static void initializeArrays() {
+
 		assetNames = new String[assetCount];
 		assetBalances = new double[assetCount];
 
@@ -215,6 +233,67 @@ class Main {
         return netIncome;
     	}
 
+  public static double calculateTotalAsset (double [] arr){
+    //Creating total int to add all the array values inside this variable
+    double totalA=0;
+    //Creating For loop to itereate around the array and add values from the array to the total integer
+    for (int i=0; i<arr.length; i++){
+      totalA+= arr[i];
+    }
+    return totalA; //returns total to the main method
+  }
+
+  public static double calculateTotalLiability (double [] arr){
+     //Creating total int to add all the array values inside this variable
+    double totalL=0;
+    //Creating For loop to itereate around the array and add values from the array to the total integer
+    for (int i=0; i<arr.length; i++){
+      totalL+= arr[i];
+    }
+    return totalL; //returns total to the main method
+  }
+
+  public static String[] getStatementInfo () {
+    //Creating a completly empty string to store the value of the company name in this string. Setting to size 3. This size is always three as there is never more than 3 peices of information for header.
+    String[] companyInfo= new String [3]; 
+    try {
+      //Creating new file and putting the path of the csv file with info of company name
+      File file= new File("ExampleUserFile.csv");
+      
+      //Initializing scanner which will scan the csv file
+      Scanner reader = new Scanner(file);
+      //Storing the value of the company name, date into the string array using simple for loop
+      for(int i=0; i < 3; i++){
+        companyInfo[i] = reader.nextLine();
+      }
+    }
+    catch (Exception e) {
+      e.printStackTrace();
+    }
+    //returning the string with company info (name and date) to the main method
+    return companyInfo;
+  }
+
+  public static double getOwnersEquity (double[] arrDrawings, double[] arrStartingBalance, double Income){
+    double totalDrawings=0;
+    double startingBalance=0;
+    double increaseInCapital=0;
+    double fBalance=0;
+
+    for(int i=0; i< arrDrawings.length; i++){
+      totalDrawings+= arrDrawings[i];
+    }
+
+    for (int i=0; i < arrStartingBalance.length; i++){
+      startingBalance += arrStartingBalance[i];
+    }
+
+    increaseInCapital= Income-totalDrawings;
+
+    fBalance= increaseInCapital+startingBalance;
+
+    return fBalance;
+  }
 
 	public static boolean empty(String line) {
 		return trim(line).equals("");
@@ -224,75 +303,3 @@ class Main {
 		return line.replaceAll(Pattern.quote(","), "");
 	}
 }
- /* public static void main(String[] args) {
-    
-    //Arrays for assets accounts and their respective values
-    String [] assetAccountNames= {"Cash", "A/R- Morgan", "Furniture","Autombile", "Land"};
-    int [] assetAccountValues= {1000, 5000, 7000, 40000, 100000};
-
-    //Arays for liablities accounts and their respective values
-    String [] liabilityAccountNames= {"A/P- Mike", "Bank Loan", "Mortgage"};
-    int [] liabilityAccountValues= {100, 5000, 50000};
-
-    //Calling method to get total assets
-    int totalAssets = calculateTotalAsset(assetAccountValues);
-
-    //Calling method to get total liability
-    int totalLiability = calculateTotalLiability(liabilityAccountValues);
-    
-    //Calling method to get company name info
-    String[] statementInfo = getStatementInfo();
-
-    //Getting information from the array returned above. This infor mation is regarding the company name and date which is important to add on the balance sheet and income statements.
-    String companyName = statementInfo[0];
-    String date = statementInfo[2];
-  } 
-
-  public static int calculateTotalAsset (int [] arr){
-    //Creating total int to add all the array values inside this variable
-    int total=0;
-
-    //Creating For loop to itereate around the array and add values from the array to the total integer
-    for (int i=0; i<arr.length; i++){
-      total+= arr[i];
-    }
-    return total; //returns total to the main method
-  }
-
-  public static int calculateTotalLiability (int [] arr){
-     //Creating total int to add all the array values inside this variable
-    int totalL=0;
-
-    //Creating For loop to itereate around the array and add values from the array to the total integer
-    for (int i=0; i<arr.length; i++){
-      totalL+= arr[i];
-    }
-    return totalL; //returns total to the main method
-  }
-  public static String[] getStatementInfo () {
-
-    //Creating a completly empty string to store the value of the company name in this string. Setting to size 3. This size is always three as there is never more than 3 peices of information for header.
-    String[] companyInfo= new String [3]; 
-
-    try {
-      //Creating new file and putting the path of the csv file with info of company name
-      File file= new File("ExampleUserFile.csv");
-      
-      //Initializing scanner which will scan the csv file
-      Scanner reader = new Scanner(file);
-
-      //Storing the value of the company name, date into the string array using simple for loop
-      for(int i=0; i < 3; i++){
-        companyInfo[i] = reader.nextLine();
-      }
-
-    }
-
-    catch (Exception e) {
-      e.printStackTrace();
-    }
-    //returning the string with company info (name and date) to the main method
-    return companyInfo;
-  }
-}
-*/
