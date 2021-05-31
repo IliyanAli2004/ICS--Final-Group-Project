@@ -201,11 +201,11 @@ class Main {
         double sumRevenue = 0;
         double netIncome = 0;
 		//adds up all of the expense arrays in a for loop
-        for (int i = 0; i < 7; i++) {
+        for (int i = 0; i < expenseBalances.length; i++) {
             sumExpense = sumExpense + expenseBalances[i];
         }
 		//adds up all the revenue arrays in a for loop
-        for (int i = 0; i < 7; i++) {
+        for (int i = 0; i < incomeBalances.length; i++) {
             sumRevenue = sumRevenue + incomeBalances[i];
         }
 		//subtracts the two sums to create the net income
