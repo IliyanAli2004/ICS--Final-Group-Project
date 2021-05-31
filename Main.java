@@ -78,7 +78,6 @@ class Main {
 			String currentBalance = "";
 			while (scanner.hasNextLine()) {
 				String line = scanner.nextLine();
-				readCompanyNameAndDate(lineNumber, line);
 				currentBalance = checkCurrentBalance(currentBalance, line);
 				countAccountRows(currentBalance, line);
 				lineNumber++;
@@ -295,3 +294,4 @@ class Main {
     return companyInfo;
   }
 }
+*/
