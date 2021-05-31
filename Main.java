@@ -247,6 +247,13 @@ class Main {
 
     //Calling method to get total liability
     int totalLiability = calculateTotalLiability(liabilityAccountValues);
+    
+    //Calling method to get company name info
+    String[] statementInfo = getStatementInfo();
+
+    //Getting information from the array returned above. This infor mation is regarding the company name and date which is important to add on the balance sheet and income statements.
+    String companyName = statementInfo[0];
+    String date = statementInfo[2];
   } 
 
   public static int calculateTotalAsset (int [] arr){
@@ -269,5 +276,30 @@ class Main {
       totalL+= arr[i];
     }
     return totalL; //returns total to the main method
+  }
+  public static String[] getStatementInfo () {
+
+    //Creating a completly empty string to store the value of the company name in this string. Setting to size 3. This size is always three as there is never more than 3 peices of information for header.
+    String[] companyInfo= new String [3]; 
+
+    try {
+      //Creating new file and putting the path of the csv file with info of company name
+      File file= new File("ExampleUserFile.csv");
+      
+      //Initializing scanner which will scan the csv file
+      Scanner reader = new Scanner(file);
+
+      //Storing the value of the company name, date into the string array using simple for loop
+      for(int i=0; i < 3; i++){
+        companyInfo[i] = reader.nextLine();
+      }
+
+    }
+
+    catch (Exception e) {
+      e.printStackTrace();
+    }
+    //returning the string with company info (name and date) to the main method
+    return companyInfo;
   }
 }
