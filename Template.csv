@@ -8,5 +8,14 @@ Account Name,Balance
 Liabilities
 Account Name,Balance
 
-Owner's Equity
-Account Name,Balance
+Owner's Equity Capital,
+Owner Name - Capital,Balance
+
+Owner's Equity Drawings,
+Owner Name - Drawings,Balance
+
+Owner's Equity Income,
+Revenue,Balance
+
+Owner's Equity Expense,
+Expense,Balance
