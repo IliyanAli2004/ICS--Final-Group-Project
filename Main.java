@@ -32,6 +32,7 @@ public class Main extends Application {
     // Stage the windows and scenes for GUI
     Stage window;
     Scene scene, scene2, scene3;
+    File userFile;
     
 
 	static String[] assetNames = new String[0];
@@ -255,12 +256,12 @@ public class Main extends Application {
 		return totalL; //returns total to the main method
 	}
 
-	public static String[] getStatementInfo () {
+	public static String[] getStatementInfo (File userFile) {
 		//Creating a completly empty string to store the value of the company name in this string. Setting to size 3. This size is always three as there is never more than 3 peices of information for header.
 		String[] companyInfo= new String [3]; 
 		try {
 			//Creating new file and putting the path of the csv file with info of company name
-			File file= new File("ExampleUserFile.csv");
+			File file= userFile;
 		
 			//Initializing scanner which will scan the csv file
 			Scanner reader = new Scanner(file);
@@ -392,7 +393,7 @@ public class Main extends Application {
             double netIncome = netIncome(expenseBalances, incomeBalances);
 
             //Calling method to get company name info
-            String[] statementInfo = getStatementInfo();
+            String[] statementInfo = getStatementInfo(userFile);
             //Getting information from the array returned above. This information is regarding the company name and date which is important to add on the balance sheet and income statements.
             String companyName = statementInfo[0];
             String date = statementInfo[2];
@@ -410,7 +411,7 @@ public class Main extends Application {
             double netIncome = netIncome(expenseBalances, incomeBalances);
             
             //Calling method to get company name info
-            String[] statementInfo = getStatementInfo();
+            String[] statementInfo = getStatementInfo(userFile);
             //Getting information from the array returned above. This infor mation is regarding the company name and date which is important to add on the balance sheet and income statements.
             String companyName = statementInfo[0];
             String date = statementInfo[2];
@@ -679,7 +680,7 @@ public class Main extends Application {
             double netIncomeD = netIncome(expenseBalances, incomeBalances);
                         
             //Calling method to get company name info
-            String[] statementInfo = getStatementInfo();
+            String[] statementInfo = getStatementInfo(userFile);
             //Getting information from the array returned above. This information is regarding the company name and date which is important to add on the balance sheet and income statements.
             String companyName2 = statementInfo[0];
             String date2 = statementInfo[2];
@@ -1000,7 +1001,7 @@ public class Main extends Application {
             double netIncomeB = netIncome(expenseBalances, incomeBalances);
 
             //Calling method to get company name info
-            String[] statementInfo = getStatementInfo();
+            String[] statementInfo = getStatementInfo(userFile);
             //Getting information from the array returned above. This information is regarding the company name and date which is important to add on the balance sheet and income statements.
             String companyName3 = statementInfo[0];
             String date3 = statementInfo[2];
