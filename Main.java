@@ -3,12 +3,11 @@
 * Assignemt: Final Assignment- Accounting documents
 *
 */
-
+//File imports
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Scanner;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.regex.Pattern;
 
 // Javafx imports
@@ -33,116 +32,154 @@ public class Main extends Application {
     Stage window;
     Scene scene, scene2, scene3;
     static File userFile;
-    
-
+	
+	//Store all asset account names and balanaces/information
 	static String[] assetNames = new String[0];
 	static double[] assetBalances = new double[0];
 	static int assetCount = 0;
 	static String assetStart = "Assets";
-
+	
+	//Store all liabilities account names and balances/information 
 	static String[] liabilityNames = new String[0];
 	static double[] liabilityBalances = new double[0];
 	static int liabilityCount = 0;
 	static String liabilityStart = "Liabilities";
-
+	
+	//Store all capital account names and balances/information
 	static String[] capitalNames = new String[0];
 	static double[] capitalBalances = new double[0];
 	static int capitalCount = 0;
 	static String capitalStart = "Owner's Equity Capital";
-
+	
+	//Store the drawings account name and balance/information 
 	static String[] drawingNames = new String[0];
 	static double[] drawingBalances = new double[0];
 	static int drawingCount = 0;
 	static String drawingStart = "Owner's Equity Drawings";
-
+	
+	//Store the income account name and balances/information
 	static String[] incomeNames = new String[0];
 	static double[] incomeBalances = new double[0];
 	static int incomeCount = 0;
 	static String incomeStart = "Owner's Equity Income";
-
+	
+	//Store all expenses account names and balances/information 
 	static String[] expenseNames = new String[0];
 	static double[] expenseBalances = new double[0];
 	static int expenseCount = 0;
 	static String expenseStart = "Owner's Equity Expense";
 	
+	//Current index of the account line we are reading since in all of the arrays, first index is 0
 	static int currentIndex = 0;
 	
+	//@param args
+	//@throws IOException
 	public static void main(String[] args) throws IOException {
 		// Launches GUI Application
         launch(args);
         
 	}
 
-
-
-    public static void readAccountBalances(File dataFile) {
+        //Method that reads the "ExampleUserFile.csv" file line by line and from each line, read the names and amounts of each asset, liability, capital, drawings, income and expenses
+	//@param File dataFile is the users file that they chose in the file chooser ("ExampleUserFile.csv")
+	public static void readAccountBalances(File dataFile) {
 		try {
+			//Create scanner
 			Scanner scanner = new Scanner(dataFile);
+			//Variable for current balance can be assets, liabilities, capital, drawings, income and expenses
 			String currentBalance = "";
+			//Loop line by line
 			while (scanner.hasNextLine()) {
+				//Read a line
 				String line = scanner.nextLine();
+				//Read current balance type assets, liabilities, capital, drawings, income and expenses
 				currentBalance = checkCurrentBalance(currentBalance, line);
+				//Read name and amount of the corresponding account
 				readAccountRow(currentBalance, line);
 				currentIndex++;
 			}
 			scanner.close();
+			//Give an error if file not found
 		} catch (FileNotFoundException e) {
-			System.out.println("An error occurred.");
-			e.printStackTrace();
+		       System.out.println("An error occurred.");
+		       e.printStackTrace();
 		}
 	}
-
+	//Reads the "ExampleUserFile.csv" file line by line and extracts company name and date of balances and also reads the number of assets, liabilities, capital, drawings, income and expenses
+	//@param File dataFile is the users file that they chose in the file chooser ("ExampleUserFile.csv")
 	public static void readInformation(File dataFile) {
 		try {
+			//Create scanner
 			Scanner scanner = new Scanner(dataFile);
+			//Start with line number 1
 			int lineNumber = 1;
+			//Current balance can be assets, liabilities, capital, drawings, income and expenses
 			String currentBalance = "";
+			//Loop line by line
 			while (scanner.hasNextLine()) {
+				//Read a line from the csv file
 				String line = scanner.nextLine();
+				//Current balance can be assets, liabilities, capital, drawings, income and expenses
 				currentBalance = checkCurrentBalance(currentBalance, line);
+				//Count number of rows for each balance
 				countAccountRows(currentBalance, line);
+				//Next line
 				lineNumber++;
 			}
 			scanner.close();
+			//Give an error if file not found
 		} catch (FileNotFoundException e) {
 			System.out.println("An error occurred.");
 			e.printStackTrace();
 		}
 	}
-
+        //Reads and stores names and amount of assets, liabilities, capital, drawings, income and expenses in corresponding arrays
+	//@param currentBalance current assets, liabilities, capital, drawings income and expenses
+	//@param line from csv file
 	public static void readAccountRow(String currentBalance, String line) {
+		//Check if line is empty or current index is not -1,  currentIndex -1 means that we have not started reading assets, liabilities, capital, drawings, income or expenses so its reading any line before accounts headings
 		if(!empty(line) && currentIndex > -1) {
+			//Depending upon assets, liabilities, capital, drawings, income and expenses, read the name and amounts
 			if(assetStart.equals(currentBalance)) {
 				assetNames[currentIndex] = readName(line);
 				assetBalances[currentIndex] = readBalance(line);
-			} else if(liabilityStart.equals(currentBalance)) {
+			} 
+			else if(liabilityStart.equals(currentBalance)) {
 				liabilityNames[currentIndex] = readName(line);
 				liabilityBalances[currentIndex] = readBalance(line);
-			} else if(capitalStart.equals(currentBalance)) {
+			} 
+			else if(capitalStart.equals(currentBalance)) {
 				capitalNames[currentIndex] = readName(line);
 				capitalBalances[currentIndex] = readBalance(line);
-			} else if(drawingStart.equals(currentBalance)) {
+			} 
+			else if(drawingStart.equals(currentBalance)) {
 				drawingNames[currentIndex] = readName(line);
 				drawingBalances[currentIndex] = readBalance(line);
-			} else if(expenseStart.equals(currentBalance)) {
+			} 
+			else if(expenseStart.equals(currentBalance)) {
 				expenseNames[currentIndex] = readName(line);
 				expenseBalances[currentIndex] = readBalance(line);
-			} else if(incomeStart.equals(currentBalance)) {
+			} 
+			else if(incomeStart.equals(currentBalance)) {
 				incomeNames[currentIndex] = readName(line);
 				incomeBalances[currentIndex] = readBalance(line);
 			}
 		}
-		
 	}
-
+        //Reads the balances of accounts
+	//@param line from input csv file
+	//@return amount/balance of account
 	public static double readBalance(String line) {
 		return Double.parseDouble(line.split(Pattern.quote(","))[1]);
 	}
-
+	//Reads the names of accounts
+	//@param line from input csv file
+	//@return Name of account
 	public static String readName(String line) {
 		return line.split(Pattern.quote(","))[0];
 	}
-
+	
+	//Initializes the arrays to store names and amounts of the accounts related to assets, liabilities, capital, drawings, income and expenses
 	public static void initializeArrays() {
 
 		assetNames = new String[assetCount];
@@ -165,7 +202,8 @@ public class Main extends Application {
 
 		
 	}
-
+	
+	//Reduce each count by 1 since there is a empty line after each account type group of assets, liabilities, capital, drawings, income and expenses
 	public static void fixTotalCounts() {
 		assetCount--;
 		liabilityCount--;
@@ -174,46 +212,70 @@ public class Main extends Application {
 		expenseCount--;
 		incomeCount--;
 	}
-
+	
+	//Depending upon currentBalance adds to the count of assets, liabilities, capital, drawings, income and expenses 
+	//@param currentBalance is current account
+	//@param line is from input csv file
 	public static void countAccountRows(String currentBalance, String line) {
 		if(!empty(line)) {
 			if(assetStart.equals(currentBalance)) {
 				assetCount++;
-			} else if(liabilityStart.equals(currentBalance)) {
+			} 
+			else if(liabilityStart.equals(currentBalance)) {
 				liabilityCount++;
-			} else if(capitalStart.equals(currentBalance)) {
+			} 
+			else if(capitalStart.equals(currentBalance)) {
 				capitalCount++;
-			} else if(drawingStart.equals(currentBalance)) {
+			} 
+			else if(drawingStart.equals(currentBalance)) {
 				drawingCount++;
-			} else if(expenseStart.equals(currentBalance)) {
+			} 
+			else if(expenseStart.equals(currentBalance)) {
 				expenseCount++;
-			} else if(incomeStart.equals(currentBalance)) {
+			} 
+			else if(incomeStart.equals(currentBalance)) {
 				incomeCount++;
 			}
 		}
 	}
-
+	
+	//Checks the provided line and determines the type of account
+	//@param currentBalance currently selected balance can be assets, liabilities, capital, drawings, income and expenses
+	//@param line is current line
+	//@return assets, liabilities, capital, drawings, income and expenses
 	public static String checkCurrentBalance(String currentBalance, String line) {
-		
+		//Check if a new account type has started and then return that, otherwise return the existing account type
 		if(trim(line).equals(assetStart)) {
 			currentBalance = assetStart;
+			//At the beginning of new balance move the current index to heading. Actual account balance line minus 1 
 			currentIndex = -1;
-		} else if(trim(line).equals(liabilityStart)) {
+		} 
+		else if(trim(line).equals(liabilityStart)) {
 			currentBalance = liabilityStart;
+			//At the beginning of new balance move the current index to heading. Actual account balance line minus 1
 			currentIndex = -1;
-		} else if(trim(line).equals(capitalStart)) {
+		} 
+		else if(trim(line).equals(capitalStart)) {
 			currentBalance = capitalStart;
+			//At the beginning of new balance move the current index to heading. Actual account balance line minus 1
 			currentIndex = -1;
-		} else if(trim(line).equals(drawingStart)) {
+		} 
+		else if(trim(line).equals(drawingStart)) {
 			currentBalance = drawingStart;
+		        //At the beginning of new balance move the current index to heading. Actual account balance line minus 1
 			currentIndex = -1;
-		} else if(trim(line).equals(expenseStart)) {
+		} 
+		else if(trim(line).equals(expenseStart)) {
 			currentBalance = expenseStart;
+			//At the beginning of new balance move the current index to heading. Actual account balance line minus 1
 			currentIndex = -1;
-		} else if(trim(line).equals(incomeStart)) {
+		} 
+		else if(trim(line).equals(incomeStart)) {
 			currentBalance = incomeStart;
+			//At the beginning of new balance move the current index to heading. Actual account balance line minus 1
 			currentIndex = -1;
 		}
+		//Return the account type
 		return currentBalance;
 	}
 	public static double netIncome(double[] expenseBalances, double[] incomeBalances){
@@ -298,11 +360,17 @@ public class Main extends Application {
 
 		return fBalance;
 	}
-
+	
+	//Checks if a line is empty to removes all commas and  checks if remaining line is empty
+	//@param line from input csv file
+	//@return true if line without commas is empty, otherwise false
 	public static boolean empty(String line) {
 		return trim(line).equals("");
 	}
-
+	
+	//Removes all commas from a line 
+	//@param line from input csv file
+	//@return line without commas
 	public static String trim(String line) {
 		return line.replaceAll(Pattern.quote(","), "");
 	}
