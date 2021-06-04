@@ -297,7 +297,11 @@ public class Main extends Application {
 		//returns the net income to the main
         return netIncome;
     	}
-
+	/*
+  	*Name: calculateTotalAsset
+  	*Description: Takes input of an array which contains all the values of the assets. Adds all the values and gets the total Assets value which is used in the balance sheet.
+  	*@return: totalA- DataType double- This variable contains the total amount of assets which is important for further calculations as well as presenting on the GUI
+  	*/
 	public static double calculateTotalAsset (double [] arr){
 		//Creating total int to add all the array values inside this variable
 		double totalA=0;
@@ -307,7 +311,11 @@ public class Main extends Application {
 		}
 		return totalA; //returns total to the main method
 	}
-
+	 /*
+  	*Name: calculateTotalLiability
+  	*Description: Takes input of an array which contains all the values of the liability. Adds all the values and gets the total Liability value which is used in the balance sheet.
+  	*@return: totalL- DataType double- This variable contains the total amount of Liability which is important for further calculations as well as presenting on the GUI. This value is also used to get the value of OwnersEquity and Liability part in the balance sheet.
+ 	*/
 	public static double calculateTotalLiability (double [] arr){
 		//Creating total int to add all the array values inside this variable
 		double totalL=0;
@@ -317,7 +325,11 @@ public class Main extends Application {
 		}
 		return totalL; //returns total to the main method
 	}
-
+	/*
+  	*Name: getStatementInfo
+  	*Description: Reads the csv file with a scanner object. The scanner reads the file for information regarding date and company name and stores those lines into an array. That array is then returned.
+  	*@return: comapanyInfo- DataType double[]- contains the values of companyName and Date of the statement. This is divded later into spereate name and date using index value. But a sting array is returned. 
+  	*/
 	public static String[] getStatementInfo (File userFile) {
 		//Creating a completly empty string to store the value of the company name in this string. Setting to size 3. This size is always three as there is never more than 3 peices of information for header.
 		String[] companyInfo= new String [3]; 
@@ -339,25 +351,34 @@ public class Main extends Application {
 		//returning the string with company info (name and date) to the main method
 		return companyInfo;
 	}
-
+	/*
+  	*Name: getOwnersEquity
+  	*Description: Gets all of the Starting values, Drawings values and Income values and uses the a formula to calculate the final balance.
+  	*@param: arrDrawings- DataType double []- This array contains the value of the amount of cash the person made in total.  This is important for us to calculate the final Balance.
+  	*@param: arrStartingBalance- DataType double []- This array contains the starting balance value which is then used to get the ending balaance using the formula
+  	*@param: Income - DataType: double- This variable contains the amount of income generated in the period. Income is also important for getting the final ending balance.
+  	*@return: fBalance- DataType  double- This is also a variable not an array since only one value. This variable contains the ending balance/ final balance of the period. After putting everything into the equation this is what we get and its being returned. 
+  	*/
 	public static double getOwnersEquity (double[] arrDrawings, double[] arrStartingBalance, double Income){
+		//Creating all variables to use later in this method
 		double totalDrawings=0;
 		double startingBalance=0;
 		double increaseInCapital=0;
 		double fBalance=0;
-
+		
+		//Simple for loop to get total amount of drawings into a variable.
 		for(int i=0; i< arrDrawings.length; i++){
 			totalDrawings+= arrDrawings[i];
 		}
-
+		//Simple for loop to get the starting balance of the company
 		for (int i=0; i < arrStartingBalance.length; i++){
 			startingBalance += arrStartingBalance[i];
 		}
-
+   		//Using formula to get increasseInCapital Value
 		increaseInCapital= Income-totalDrawings;
-
+    		//Getting final Balance again using the formula. This is the ending balance of the company.
 		fBalance= increaseInCapital+startingBalance;
-
+    		//Returns the fBalance for further caluclations as well as for displaying on the balance sheet.
 		return fBalance;
 	}
 	
