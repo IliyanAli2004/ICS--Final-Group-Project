@@ -32,7 +32,7 @@ public class Main extends Application {
     // Stage the windows and scenes for GUI
     Stage window;
     Scene scene, scene2, scene3;
-    File userFile;
+    static File userFile;
     
 
 	static String[] assetNames = new String[0];
@@ -370,7 +370,7 @@ public class Main extends Application {
             // Opens file chooser and allows user to choose a file
             FileChooser fileChooser = new FileChooser();
             fileChooser.setTitle("Upload File");
-            File userFile = fileChooser.showOpenDialog(window);
+            userFile = fileChooser.showOpenDialog(window);
 
             readInformation(userFile);
             fixTotalCounts();
@@ -695,8 +695,6 @@ public class Main extends Application {
         Button exitButtonIS = new Button("Exit Program");
         exitButtonIS.setOnAction(e -> {properExit();});
 
-        // Lets user Download the completed Income Statement
-        Button exportIS = new Button("Download Completed\nIncome Statement");
 
         
         // Formatting
@@ -738,7 +736,6 @@ public class Main extends Application {
         grid.add(mainMenu, 1, 70+add, 1, 1);
         grid.add(toBalanceSheetFromIS, 3, (70+add), 1, 1);
         grid.add(exitButtonIS, 1, 75+add, 1, 1);
-        grid.add(exportIS, 3, 75+add, 1, 2);
         grid.setAlignment(Pos.TOP_CENTER);
 
         // Sets and shows income statement screen
@@ -1010,10 +1007,9 @@ public class Main extends Application {
         });
 
         // Lets user exit program
-        Button exitButtonIS = new Button("Exit Program");
-        exitButtonIS.setOnAction(e -> {properExit();});
+        Button exitButtonBS = new Button("Exit Program");
+        exitButtonBS.setOnAction(e -> {properExit();});
 
-        Button exportIS = new Button("Download Completed\nBalance Sheet");
 
         
         // Formatting
@@ -1065,8 +1061,7 @@ public class Main extends Application {
         
         grid.add(mainMenu, 0, 70, 1, 1);
         grid.add(toIncomeStatementFromBS, 4, 70, 1, 1);
-        grid.add(exitButtonIS, 0, 75, 1, 1);
-        grid.add(exportIS, 4, 75, 1, 2);
+        grid.add(exitButtonBS, 0, 75, 1, 1);
 
         grid.setAlignment(Pos.TOP_CENTER);
 
